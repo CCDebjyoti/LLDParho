@@ -1,0 +1,66 @@
+import java.util.*;
+
+public class ParkingFloor{
+
+	private final noOfBikeSpots;
+	private final noOfCarSpots;
+	private final noOfBigCarSpots;
+	private Map<VehicleType, Deque<ParkingSpot>>freeSpotsMap;
+	private HashMap activeSpotsMap;
+	private final int floorNumber;
+
+	public ParkingFloor(int noOfBikeSpots, int noOfCarSpots, int noOfBigCarSpots, int floorNumber){
+		this.noOfBikeSpots = noOfBikeSpots;
+		this.noOfCarSpots = noOfCarSpots;
+		this.noOfBigCarSpots = noOfBigCarSpots;
+		this.floorNumber = floorNumber;
+
+		freeSpotsMap=  new EnumMap<>(VehicleType.class);;
+		activeSpotsMap = new HashMap<String, ParkingSpot>(); // SpotId is the key
+
+		for(int i = 0; i < noOfBikeSpots; i++){
+			ParkingSpot bikeParkingSpot = new ParkingSpot(VehicleType.BIKE,floorNumber);
+			freeSpotsMap.put(VehicleType.BIKE).addLast(bikeParkingSpot); // C++ type syntax need to be changed
+		}
+
+		for(int i = 0; i < noOfCarSpots; i++){
+			ParkingSpot carParkingSpot = new ParkingSpot(VehicleType.CAR,floorNumber);
+			freeSpotsMap.put(VehicleType.CAR).addLast(carParkingSpot); // C++ type syntax need to be changed
+		}
+
+		for(int i = 0; i < noOfBigCarSpots; i++){
+			ParkingSpot bigCarParkingSpot = new ParkingSpot(VehicleType.BIGCAR, floorNumber);
+			freeSpotsMap.put(VehicleType.BIGCAR).addLast(bigCarParkingSpot); // C++ type syntax need to be changed
+		}
+
+	}
+	public ParkingSpot getFreeSpot(VehicleType vehicleType) {
+		ParkingSpot currSpot = freeSpotsMap.get(vehicleType).pollFirst();
+
+		if(currSpot == NULL) {
+			throw new Exception("No Spot is free for Current Vehicle Type");
+		}
+		
+		freeSpotsMap.pop(); // Popping the first one out
+		activeSpotsMap.put(currSpot.getSpotId(), currSpot);
+		return currSpot;
+	}
+	
+	public ParkingSpot getActiveParkingSpotById(String parkingSpotId) {
+
+		if(!activeSpotsMap.containsKey(parkingSpotId)) // C++ Syntax needs to be replaced {
+			throw new Exception("Ticket Expired or Required ParkingSpot is already free!");
+		}
+
+		return activeSpotsMap.get(parkingSpotId);
+	}
+
+	public void freeActiveSpot(Vehicle vehicleType, ParkingSpot occupiedSpot) {
+		if(occupiedSpot == NULL) {
+			throw new Exception("Occupied Spot cannot be NULL!");
+		}
+
+		activeSpotsMap.remove(occupiedSpot);
+		freeSpotsMap.get(vehicleType).offer(occupiedSpot); 
+	}
+}

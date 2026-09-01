@@ -1,0 +1,16 @@
+import java.util.*;
+
+public class Ticket{
+	
+	private final String vehicleId;
+	private final String ticketId;
+	private final String parkingSpotId;
+	private final Instant entryTime;
+
+	public Ticket(String vehicleId, String parkingSpotId, Instant entryTime){
+		this.vehicleId = vehicleId;
+		this.entryTime = entryTime;
+		this.parkingSpotId = parkingSpotId;
+		ticketId = UUID.randomUUID().toString();
+	}
+}
