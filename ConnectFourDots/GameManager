@@ -1,0 +1,61 @@
+GameManager
+
+import java.util.*;
+
+private enum GameStatus {
+	START: "start",
+	END: "end",
+	DRAW: "draw"	
+}
+
+public class GameManager {
+	private final List<Player> playersParticipated;
+	private final Board board;
+	private final GameStatus currGameStatus;
+	private final Player winningPlayer;
+
+	public GameManager(List<Player> playersParticipated, int noOfRows, int noOfCols) {
+		this.playersParticipated = playersParticipated;
+		this.board = new Board(noOfRows, noOfCols);
+		this.currGameStatus = GameStatus.START;
+		this.winningPlayer = null;
+	}
+
+	public String startGame() {
+
+		Scanner sc = new Scanner(System.in);
+
+		while(currGameStatus == GameStatus.START) {
+
+			for(Player currPlayer: playersParticipated) {
+
+				if(board.isFull()) {
+					currGameStatus = GameStatus.DRAW;
+					break;
+				}
+
+				System.out.println("Enter the column Number for Player: " + Player.getPlayerName());
+				
+				int colMove = sc.IntegerNextRead(); // Wrong Syntax
+
+				// For getting a valid Move from CurrentPlayer
+
+				while(!board.isValidMove(colMove)) {
+
+					System.out.println("Please enter a valid move!");
+					colMove = sc.IntegerNextRead(); // Wrong Syntax
+				}
+
+				int rowMove = board.placeDisc(colMove, player.getColor());
+
+				if(board.isWon(rowMove, colMove, player.getColor())) {
+					currGameStatus = GameStatus.END;
+					winningPlayer = currPlayer;
+					break;
+				}
+			}
+		}
+
+		return currPlayer == null ? "Game is drawn!" : "Congrats! " + winningPlayer.getPlayerName() + " for winning the game!";
+	}
+}

@@ -1,0 +1,49 @@
+Disc
+
+import java.util.*;
+
+public enum Color {
+	GREEN,
+	RED
+}
+
+public class Disc {
+	private final int row;
+	private final int col;
+	private boolean isFree;
+	private Color discColor;
+
+	public Disc(int row, int col) {
+		this.row = row;
+		this.col = col;
+		this.isFree = true;
+
+		// Ques: Can we pass null directly? Is it a good practice while constructor calling
+		this.discColor = null; 
+	}	
+
+	/*
+	public Disc(int row, int col, Color color) {
+		this.row = row;
+		this.col = col;
+		this.discColor = color; 
+	}
+	*/
+	
+	public boolean isEmpty() {
+		return this.isFree;
+	}
+
+	public void occupy() {
+
+		this.isFree = false;
+	}
+
+	public void setFree() {
+		this.isFree = true;
+	}
+
+	public void setColor(Color playerColor) {
+		this.discColor = playerColor;
+	}
+}

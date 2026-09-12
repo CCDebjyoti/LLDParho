@@ -1,0 +1,188 @@
+Board
+
+import java.util.*;
+
+public class Board {
+	private final int noOfRows;
+	private final int noOfCols;
+	private Disc [][] board;
+
+	public Board(int noOfRows, int noOfCols){
+		this.noOfRows = noOfRows;
+		this.noOfCols = noOfCols;
+
+		this.board = new Disc[noOfRows][noOfCols];
+		initialiseBoard();
+	}
+	
+	private void initialiseBoard() {
+
+		for(int row = 0; row < noOfRows; row++) {
+			for(int col = 0; col < noOfCols; col++) {
+				board[row][col] = new Disc(row, col);
+			}
+		}
+	}
+
+	// We can reduce complexity by traversing over 1st row and returning false if any top cell is notEmpty 
+
+	public boolean isFull() {
+
+		for(int col = 0; col < noofCols; col++) {
+			
+			if(board[0][col].isEmpty()) return false;
+		}
+
+		return true;
+	}
+
+	public boolean isValidMove(int columnChoice) {
+		
+		if(columnChoice < 0 && columnChoice >= noOfCols) 
+			throw new Exception("Column cannot be out of bounds!!");
+
+		return board[0][columnChoice].isEmpty();
+	}
+
+	public int placeDisc(int columnChoice, Color playerColor) {
+
+		for(int row = noOfRows - 1; row >= 0; row--) {
+
+			if(board[row][columnChoice].isEmpty()) {
+				board[row][columnChoice].setColor() = playerColor;
+				board[row][columnChoice].occupy();
+				return row;
+			}
+		}
+
+		return -1;
+	}
+
+	private boolean isConsecutive(private final int row, 
+									private final int col,
+									private final Color playerColor) {
+
+		if(board[row][col].isEmpty() 
+			|| board[row][col].getColor() != playerColor) {
+
+				return false;
+			}
+
+		return true;
+	}
+
+	private boolean hasWonInColumn(private final int columnChoice, Color playerColor) {
+
+		int totalConnectFours = 0;
+
+		for(int row = 0; row < noOfRows; row++) {
+
+			if(!isConsecutive(row, columnChoice, playerColor)) {
+				totalConnectFours = 0;
+				continue;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+		}
+
+		return false;
+	}
+
+	private boolean hasWonInRow(private final int rowChoice, Color playerColor) {
+
+		int totalConnectFours = 0;
+
+		for(int col = 0; col < noOfCols; col+) {
+
+			if(!isConsecutive(rowChoice, col, playerColor)) {
+				totalConnectFours = 0;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+		}
+
+		return false;
+	}
+
+	private boolean hasWonInDiagonal(private final int rowChoice, 
+										private final int columnChoice, Color playerColor) {
+
+	int totalConnectFours = 0;
+
+	int row = rowChoice, col = columnChoice;
+
+	while(row < noOfRows && col < noOfCols) {
+
+		if(!isConsecutive(row, col, playerColor)) {
+				totalConnectFours = 0;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+
+			row++, col++;
+	}
+
+	totalConnectFours = 0;
+
+	while(row >= 0 && col >= 0) {
+
+		if(!isConsecutive(row, col)) {
+				totalConnectFours = 0;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+
+			row--, col--;
+	}
+
+	totalConnectFours = 0;
+
+	while(row >= 0 && col < noOfCols) {
+
+		if(!isConsecutive(row,col)) {
+				totalConnectFours = 0;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+
+			row--, col++;
+	}
+
+	totalConnectFours = 0;
+
+	while(row >= 0 && col >= 0) {
+
+		if(!isConsecutive(row, col)) {
+				totalConnectFours = 0;
+			}
+
+			totalConnectFours += 1;
+
+			if(totalConnectFours == 4) return true;
+
+			row--, col--;
+	}
+
+	return false;
+}
+
+	public boolean isWon(int rowChoice, int columnChoice, Color playerColor) {
+		
+		
+		if(hasWonInColumn(columnChoice)) return true;
+		if(hasWonInRow(rowChoice)) return true;
+		if(hasWonInDiagonal(rowChoice, columnChoice)) return true;
+
+		return false;
+	}
+}
