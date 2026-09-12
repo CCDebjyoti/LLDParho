@@ -1,0 +1,76 @@
+
+
+enum status {
+
+	START,
+	DRAW,
+	END
+
+}
+
+DISC Class{
+
+	isEmpty();
+
+}
+
+playerClass{
+
+	playerName;
+	playerColour;
+	playerUID;
+
+}
+
+
+GameManager
+-board object
+-List<Player>totalPlayers
+-satus currentStatus = START
+-Player player;
+
+String startGame(){
+	
+	while( currentstaus == START ) {
+	 	prinln()
+	 	for player in players {
+
+	 		board.isFull()=true-curent status = draw;
+	 		if(draw)break;
+	 		print(give colNo);
+	 		cin>>colNo;	
+	 		board.pick(player, colNo);
+	 		if(checkIfPlayerHasWon(colNo,player)){
+	 			WinningPlayer = player;
+	 			currentStatus = END;
+	 			break;
+	 		}
+
+	 	}
+	}
+
+	return winningPlayer == NULL ? " Game is a DRAW ": winningPlayer.getName();
+}
+
+
+BoardClass{
+	no of col 
+	no of rows 
+
+	int [][] board = new int[n][m];---cellDISC class -- x, y, colour
+
+	checkIfPlayerHasWon(player.color, colNo){
+
+		subarraycount diagonal 4 ways 
+		subarraycount horizontal 2 ways
+		subarraycount vertical 2 ways count == 4 return true;
+
+	}
+	checkIfFull(){///just check board[0][i]
+		reutrn true;
+	}
+	placeDisc(){
+	//gofrom down to top check if any empty--col is full probably
+	}
+
+}
