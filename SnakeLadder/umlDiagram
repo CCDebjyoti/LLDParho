@@ -1,0 +1,100 @@
+
+enum Choice {
+
+	SNAKE,
+	LADDER,
+	EMPTY
+
+}
+
+Cell {
+
+	-int currRow, currCol;
+	-int endRow, endCol; 
+	-Choice choice;
+	+calcCellNumber(noOfRows * currRow + currCol +1);
+	+getEndingPoint() - return endRow, endCol;
+	 
+}
+
+Board {
+
+	-int n,m;
+	-Cell board [][] = new Cell [n][m];
+
+	+initializeBoard()
+	
+	+MakeMove( int diceNumber, int currRow, int currCol ) {
+
+		int currCellNo = n * currRow + currCol + 1;//discusiion is valid move needed here too many fucntions call or separation of concern for prodcution ready application
+		if ( diceNumber + currCellNo > n * m ) {
+			return pair{ currRow, currCol };
+		}
+
+		Cell currCell = board[currRow][currCol];
+
+		while( currCell.getChoice() != Choice.EMPTY ) {
+
+			newRow, newCol = currCell.getEndingPoint();
+			currCell = board[newRow][newCol];
+
+		}
+
+		return currCell.getCurrRow, currCell.getCurrCol;
+
+	}
+
+		//isvalidMove { Readability MostImp }
+		//makeMove
+		//isGameOver
+
+	+boolean isGameOver (int currRow, int currCol) {// so we call this for each time we roll dice optimal or not or better soc ??
+
+		int finalCell = n * currRow + currCol + 1; // call this for function only for > 93 not prodcution ready approch ?
+
+		if( n * m == finalCell ) {
+			return true;
+		}
+
+		return false;
+
+	}
+	
+}
+
+GameStatus {
+
+	PLAY,
+	WIN
+
+}
+
+GameManager{
+	
+	-List<Player> players;
+	-int noOfRows;
+	-int noOfColoumns;
+	-Board board; // constructor injection
+	-GameStatus currentStatus;
+	-Player winningPlayer;
+
+	String play() {
+
+		while ( currentStatus == PLAY ) {
+
+			int diceRoll = (int) (Math.random() * 6) + 1;  
+
+			currRow, currCol = makeMove( diceRoll, player.getRow, player.getCol );
+
+			if( isGameOver(currRow, currRow ) ) {
+
+				winningPlayer = currentPlayer;
+				currentStatus = WIN;	
+				break;
+			}
+
+		}
+		return currentPlayer.getPlayerName();
+	}
+
+}
